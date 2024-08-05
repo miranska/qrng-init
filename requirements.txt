@@ -1,0 +1,22 @@
+numpy
+jupyter
+tensorflow==2.16.1
+keras==3.3.3
+# Install of keras-nlp can be tricky: https://keras.io/keras_nlp/#keras-3-installation
+keras-nlp==0.12.1 # for Transformer model
+scipy
+
+# for data aggregation
+tqdm
+pandas
+fastparquet
+
+# for testing
+pytest
+pytest-cov
+pytest-forked
+pytest-xdist
+
+# demo
+matplotlib
+ipykernel

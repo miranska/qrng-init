@@ -1,0 +1,19 @@
+[tool.pytest.ini_options]
+addopts = "--forked --numprocesses auto --cov-report term-missing --cov-branch --cov-report xml --cov-report term --cov=. -vv --strict-markers -rfE"
+pythonpath = [
+  "src"
+]
+
+# Two attributes below control output of log messages when running pytest
+log_cli = false  # set to true to see log messages
+log_level = "INFO"  # set log level: e.g., DEBUG, INFO, or ERROR
+
+[tool.coverage.run]
+relative_files = true
+
+[tool.setuptools]
+include-package-data = false
+
+[tool.black]
+line-length = 79
+target-version = ['py310', 'py311']

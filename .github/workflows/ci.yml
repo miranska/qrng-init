@@ -1,0 +1,84 @@
+#  for details, see https://github.com/marketplace/actions/python-coverage-comment
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - 'main'
+
+jobs:
+  run_static_checks:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [ "3.10", "3.11" ]
+    name: Do linting and formatting
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        id: setup-python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Lint using flake8
+        uses: py-actions/flake8@v2
+        with:
+          max-line-length: "79"
+          plugins: "flake8-bugbear"
+      
+      - name: Lint using black
+        uses: psf/black@stable
+        with:
+          options: "--check --verbose --line-length 79"
+
+  run_dynamic_checks:
+    runs-on: ubuntu-latest
+    needs: [run_static_checks]  # run once we fix static errors
+    strategy:
+      matrix:
+        python-version: [ "3.10", "3.11" ]
+    permissions:
+      # Gives the action the necessary permissions for publishing new
+      # comments in pull requests.
+      pull-requests: write
+      # Gives the action the necessary permissions for pushing data to the
+      # python-coverage-comment-action branch, and for editing existing
+      # comments (to avoid publishing multiple comments in the same PR)
+      contents: write
+    name: Run tests and check coverage
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        id: setup-python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install deps
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Launch tests & generate report
+        run: pytest
+
+      - name: Coverage comment
+        id: coverage_comment
+        uses: py-cov-action/python-coverage-comment-action@v3
+        with:
+          GITHUB_TOKEN: ${{ github.token }}
+          # If the coverage percentage is above or equal to this value, the badge will be green.
+          MINIMUM_GREEN: 96
+
+      - name: Store Pull Request comment to be posted
+        uses: actions/upload-artifact@v3
+        if: steps.coverage_comment.outputs.COMMENT_FILE_WRITTEN == 'true'
+        with:
+          # If you use a different name, update COMMENT_ARTIFACT_NAME accordingly
+          name: python-coverage-comment-action
+          # If you use a different name, update COMMENT_FILENAME accordingly
+          path: python-coverage-comment-action.txt
