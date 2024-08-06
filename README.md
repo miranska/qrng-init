@@ -2,7 +2,7 @@
 ![CI status badge](https://github.com/miranska/qrng-init/actions/workflows/ci.yml/badge.svg?branch=main)
 [![Coverage badge](https://github.com/miranska/qrng-init/raw/python-coverage-comment-action-data/badge.svg)](https://github.com/miranska/qrng-init/tree/python-coverage-comment-action-data)
 
-This repository is the official implementation of "On Using Quasirandom Sequences in Machine Learning for Model Weight Initialization". 
+This repository is the official implementation of "[On Using Quasirandom Sequences in Machine Learning for Model Weight Initialization](https://arxiv.org/abs/2408.02654)". 
 <p align="center">    
     <br />
     <a href="src/demo.ipynb">View Demo</a>
@@ -75,6 +75,19 @@ coverage html
 Note that Github CI pipeline generates the latest code coverage report automatically and places it into 
 `python-coverage-comment-action-data` branch.
 
+## Citation
+If you use the paper, algorithm, or code, please cite them as follows. 
+```bibtex
+@misc{qrng_init_2024,
+      title={On Using Quasirandom Sequences in Machine Learning for Model Weight Initialization}, 
+      author={Andriy Miranskyy and Adam Sorrenti and Viral Thakar},
+      year={2024},
+      eprint={2408.02654},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/2408.02654},
+}
+```
 
 ## Contributing
 
